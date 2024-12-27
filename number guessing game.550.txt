@@ -1,0 +1,123 @@
+#include <stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void normal_game();
+void timed_game();
+void difficulty_game(int max_range);
+
+int main() {
+    int choice;
+
+    // Seed the random number generator
+    srand(time(0));
+
+    printf("Welcome to the Number Guessing Game!\n");
+    printf("Choose a mode:\n");
+    printf("1. Normal Game\n");
+    printf("2. Timed Game\n");
+    printf("3. Difficulty Game (Easy/Medium/Hard)\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1:
+            normal_game();
+            break;
+        case 2:
+            timed_game();
+            break;
+        case 3:
+            printf("Choose difficulty (1: Easy, 2: Medium, 3: Hard): ");
+            int difficulty;
+            scanf("%d", &difficulty);
+            if (difficulty == 1) difficulty_game(50);
+            else if (difficulty == 2) difficulty_game(100);
+            else if (difficulty == 3) difficulty_game(200);
+            else printf("Invalid difficulty level!\n");
+            break;
+        default:
+            printf("Invalid choice!\n");
+    }
+
+    return 0;
+}
+
+void normal_game() {
+    int number = rand() % 100 + 1;
+    int guess, attempts = 0;
+
+    printf("\nWelcome to the Normal Game!\n");
+    printf("Guess the number between 1 and 100:\n");
+
+    do {
+        printf("Enter your guess: ");
+        scanf("%d", &guess);
+        attempts++;
+
+        if (guess > number) {
+            printf("Too high! Try again.\n");
+        } else if (guess < number) {
+            printf("Too low! Try again.\n");
+        } else {
+            printf("Congratulations! You guessed the number in %d attempts.\n", attempts);
+        }
+    } while (guess != number);
+}
+
+void timed_game() {
+    int number = rand() % 100 + 1;
+    int guess;
+    int attempts = 0;
+    int time_limit = 30; // 30 seconds time limit
+    time_t start_time, end_time;
+
+    printf("\nWelcome to the Timed Game!\n");
+    printf("Guess the number between 1 and 100. You have 30 seconds!\n");
+
+    time(&start_time); // Get current time
+
+    do {
+        printf("Enter your guess: ");
+        scanf("%d", &guess);
+        attempts++;
+        time(&end_time); // Get the current time to compare
+
+        if (difftime(end_time, start_time) > time_limit) {
+            printf("Time's up! You didn't guess the number in time.\n");
+            return;
+        }
+
+        if (guess > number) {
+            printf("Too high! Try again.\n");
+        } else if (guess < number) {
+            printf("Too low! Try again.\n");
+        } else {
+            printf("Congratulations! You guessed the number in %d attempts.\n", attempts);
+        }
+
+    } while (guess != number);
+}
+
+void difficulty_game(int max_range) {
+    int number = rand() % max_range + 1;
+    int guess, attempts = 0;
+
+    printf("\nWelcome to the Difficulty Game!\n");
+    printf("Guess the number between 1 and %d:\n", max_range);
+
+    do {
+        printf("Enter your guess: ");
+        scanf("%d", &guess);
+        attempts++;
+
+        if (guess > number) {
+            printf("Too high! Try again.\n");
+        } else if (guess < number) {
+            printf("Too low! Try again.\n");
+        } else {
+            printf("Congratulations! You guessed the number in %d attempts.\n", attempts);
+        }
+    } while (guess != number);
+}
